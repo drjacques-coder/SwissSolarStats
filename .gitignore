@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+# Ignore all downloaded raw data
+"Import BFE  Elektrizitätsproduktionsanlagen 31.10.25"/
+
+# Ignore all generated output files
+*.rds
+*.csv
