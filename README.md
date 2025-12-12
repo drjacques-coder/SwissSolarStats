@@ -1,31 +1,75 @@
-# Swiss Solar Panel Analysis
+# 🇨🇭 Swiss Solar Growth Analysis (2018–2024)
 
-This project analyzes solar panel installations in Switzerland using data from the BFE.
+This project analyzes the determinants of photovoltaic (PV) adoption across Swiss municipalities during the implementation phase of the **Energy Strategy 2050**.
+
+By merging administrative energy data with socio-economic indicators, we isolate the **growth** of solar capacity between **2018 and 2024**, identifying which communes are successfully driving the energy transition.
+
+## 📊 Preliminary Results (Top 20)
+
+We rank municipalities using two distinct "Success Metrics":
+
+### 1. Capacity Density (The "Power" Leaders)
+*Metric: Newly installed Watts per Capita (2018–2024)*
+![Top 20 Capacity](plot_top20_capacity.png)
+
+### 2. Adoption Intensity (The "Frequency" Leaders)
+*Metric: Number of new installations per 1,000 inhabitants*
+![Top 20 Intensity](plot_top20_intensity.png)
+
+---
+
+## 🛠 Methodology
+
+### 1. The "Stadelmann" Framework
+This study moves beyond simple techno-economic factors (like solar irradiation) to examine socio-political drivers, including:
+* **Green Index:** Environmental voting behavior (Federal referendums).
+* **Peer Effects:** Local contagion and entrepreneurship.
+* **Economic Incentives:** Electricity tariffs and subsidies.
+
+### 2. Intelligent Geocoding
+Swiss postal codes (PLZ) often do not align with municipal borders (e.g., PLZ 2735 covers both *Champoz* and *Valbirse*).
+To ensure data accuracy, we implemented an **Intelligent Mapping Algorithm** using the official Swisstopo directory (`AMTOVZ`):
+1.  **Priority 1:** Trust the official "Main Commune" index (`Zusatzziffer`).
+2.  **Priority 2:** If indices tie, prioritize exact matches between Village Name and Commune Name.
+*Result: This prevents "Ghost Communes" and accurately assigns solar plants to their correct political entity.*
+
+---
 
 ## 🚀 How to Run This Project
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/drjacques-coder/SwissSolarStats.git
-    ```
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/drjacques-coder/SwissSolarStats.git](https://github.com/drjacques-coder/SwissSolarStats.git)
+```
 
-2.  **Get the Data:**
-    * Download the data from: [https://opendata.swiss/de/dataset/elektrizitatsproduktionsanlagen](https://opendata.swiss/de/dataset/elektrizitatsproduktionsanlagen)
-    * Unzip the file.
+### 2. Setup Data Folders
 
-3.  **Set Up Folders:**
-    * Inside this project folder, create a new folder named exactly:
-        `Import BFE  Elektrizitätsproduktionsanlagen 31.10.25`
-        *(Note: There are two spaces after "BFE")*
-    * Move the `.csv` files (like `ElectricityProductionPlant.csv`) into that new folder.
+This project relies on external administrative data. You must create the following folder structure and download the data manually (due to size/license):
 
-4.  **Run the Analysis:**
-    * Open the `SwissSolarStats.Rproj` file to start RStudio.
-    * Open and run the `01_load_and_clean.R` script.
+#### A. Solar Data (SFOE)
 
-The project is set up to use relative paths, so as long as the data folder is named correctly, the script will run without changes
-## 📊 Preliminary Results (Top 20)
+    Download: Elektrizitätsproduktionsanlagen (BFE)
 
-![Top 20 Capacity](plot_top20_capacity.png)
+    Folder: Import BFE Elektrizitätsproduktionsanlagen 31.10.25
 
-![Top 20 Intensity](plot_top20_intensity.png)
+    File: ElectricityProductionPlant.csv
+
+#### B. Geography Data (Swisstopo)
+
+    Download: Amtliches Ortschaftsverzeichnis (Swisstopo) -> CSV format
+
+    Folder: Import Swisstopo/
+
+    File: AMTOVZ_CSV_LV95.csv
+
+#### C. Population Data (BFS)
+
+    Download: Population Statistics (STAT-TAB) -> Export as JSON
+
+    Folder: Import BFS Commune/
+
+    File: px-x-0102020000_201.json
+
+### 3. Run the Analysis
+
+Open SwissSolarStats.Rproj in RStudio and run the script 01_load_and_clean.R.
