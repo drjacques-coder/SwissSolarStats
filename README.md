@@ -24,3 +24,8 @@ This project analyzes solar panel installations in Switzerland using data from t
     * Open and run the `01_load_and_clean.R` script.
 
 The project is set up to use relative paths, so as long as the data folder is named correctly, the script will run without changes
+## 📊 Preliminary Results (Top 20)
+
+![Top 20 Capacity](plot_top20_capacity.png)
+
+![Top 20 Intensity](plot_top20_intensity.png)
