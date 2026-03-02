@@ -13,3 +13,4 @@ Import BFS Commune/
 data/processed/
 *.rds
 *.csv
+.Rproj.user

@@ -16,48 +16,51 @@ We rank municipalities using two distinct "Success Metrics":
 
 *Metric: Number of new installations per 1,000 inhabitants* ![Top 20 Intensity](plot_top20_intensity.png)
 
-## 🚀 How to Run This Project
+## 🚀 How to Reproduce This Study
 
-### 1. Clone the Repository
+To ensure full reproducibility across different operating systems (Windows, Mac, Linux) while respecting GitHub's file size limits, this project uses the `here` package for relative file paths and excludes the massive raw data files from the repository. 
 
-``` bash
-git clone [https://github.com/drjacques-coder/SwissSolarStats.git](https://github.com/drjacques-coder/SwissSolarStats.git)
-```
+Anyone can replicate this analysis by following these steps:
 
-### 2. Setup Data Folders
+### Step 1: Clone and Setup
+1. Clone this repository to your local machine.
+2. Open the R project file (`.Rproj`) in RStudio, or simply open the main R script. 
+3. Run **STEP 0 and STEP 1** of the script. This will automatically install any missing packages and generate the required folder structure on your machine:
+   ```
+   text
+   SwissSolarStats/
+   ├── data/
+   │   ├── processed/   (Final datasets will save here)
+   │   └── raw/         (You will put the downloaded data here)
+   ├── plots/           (Generated graphs will save here)
+   ├── scripts/
+   └── README.md
+   ```
+   
+### Step 2: Download the Raw Data
 
-This project relies on external administrative data. You must create the following folder structure and download the data manually (due to size/license):
+Because GitHub has a 100MB file size limit, the massive Swiss energy and geographic datasets cannot be hosted directly in this repository.
+*Note: The lightweight municipal population dataset (`px-x-0102020000_201.json`) is already bundled in the `data/raw/` folder for your convenience!*
 
-#### A. Solar Data (SFOE)
+All datasets used in this study are publicly available via the Swiss Open Government Data portal. Download the following three files and place them exactly as named into the newly created data/raw/ folder:
 
-```         
-Download: Elektrizitätsproduktionsanlagen (BFE)
+    1. Federal Office of Energy (BFE) - Solar Installations
 
-Folder: Import BFE Elektrizitätsproduktionsanlagen 31.10.25
+        Source: [Elektrizitätsproduktionsanlagen](https://opendata.swiss/de/dataset/elektrizitatsproduktionsanlagen)
 
-File: ElectricityProductionPlant.csv
-```
+        Action: Download the CSV file.
 
-#### B. Geography Data (Swisstopo)
+        Save as: ElectricityProductionPlant.csv
 
-```         
-Download: Amtliches Ortschaftsverzeichnis (Swisstopo) -> CSV format
+    2. Swisstopo - Official Directory of Towns and Cities
 
-Folder: Import Swisstopo/
+        Source: [Amtliches Ortschaftenverzeichnis](https://data.geo.admin.ch/ch.swisstopo-vd.ortschaftenverzeichnis_plz/ortschaftenverzeichnis_plz/ortschaftenverzeichnis_plz_2056.csv.zip)
 
-File: AMTOVZ_CSV_LV95.csv
-```
+        Action: Download the CSV (LV95 format).
 
-#### C. Population Data (BFS)
-
-```         
-Download: Population Statistics (STAT-TAB) -> Export as JSON
-
-Folder: Import BFS Commune/
-
-File: px-x-0102020000_201.json
-```
-
-### 3. Run the Analysis
+        Save as: AMTOVZ_CSV_LV95.csv
+   
+   
+### Step 3: Run the Analysis
 
 Open SwissSolarStats.Rproj in RStudio and run the script 01_load_and_clean.R.
