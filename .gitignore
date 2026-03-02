@@ -2,9 +2,14 @@
 .Rhistory
 .RData
 .Ruserdata
-# Ignore all downloaded raw data
-"Import BFE  Elektrizitätsproduktionsanlagen 31.10.25"/
+
+# Ignore all downloaded raw data (BFE, Swisstopo, BFS)
+data/raw/
+Import BFE*/
+Import Swisstopo/
+Import BFS Commune/
 
 # Ignore all generated output files
+data/processed/
 *.rds
 *.csv
