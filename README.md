@@ -16,24 +16,6 @@ We rank municipalities using two distinct "Success Metrics":
 *Metric: Number of new installations per 1,000 inhabitants*
 ![Top 20 Intensity](plot_top20_intensity.png)
 
----
-
-## 🛠 Methodology
-
-### 1. The "Stadelmann" Framework
-This study moves beyond simple techno-economic factors (like solar irradiation) to examine socio-political drivers, including:
-* **Green Index:** Environmental voting behavior (Federal referendums).
-* **Peer Effects:** Local contagion and entrepreneurship.
-* **Economic Incentives:** Electricity tariffs and subsidies.
-
-### 2. Intelligent Geocoding
-Swiss postal codes (PLZ) often do not align with municipal borders (e.g., PLZ 2735 covers both *Champoz* and *Valbirse*).
-To ensure data accuracy, we implemented an **Intelligent Mapping Algorithm** using the official Swisstopo directory (`AMTOVZ`):
-1.  **Priority 1:** Trust the official "Main Commune" index (`Zusatzziffer`).
-2.  **Priority 2:** If indices tie, prioritize exact matches between Village Name and Commune Name.
-*Result: This prevents "Ghost Communes" and accurately assigns solar plants to their correct political entity.*
-
----
 
 ## 🚀 How to Run This Project
 

@@ -1,32 +1,51 @@
 # ===================================================================
-# SWISS ELECTRICITY PRODUCTION ANALYSIS
-# 03: LOAD, CLEAN, JOIN & NORMALIZE (FINAL SCRIPT)
-#
-# 1. Load BFE Solar Data (Installations)
-# 2. Load Swisstopo Data (Commune Names & BFS IDs)
-# 3. Load BFS Population Data (JSON)
-# 4. Join all datasets to calculate kW per Capita.
+# STEP 0: SETUP PROJECT ENVIRONMENT
 # ===================================================================
+
+# Check Git status and GitHub remote connection
+print("Checking local Git status and GitHub remote link...")
+system("git remote -v") 
+system("git status")
 
 # -------------------------------------------------------------------
 # STEP 1: LOAD LIBRARIES
 # -------------------------------------------------------------------
-if(!require("readr")) install.packages("readr") # For reading CSV/delim files
-if(!require("dplyr")) install.packages("dplyr") # For data manipulation
-if(!require("lubridate")) install.packages("lubridate") # For working with dates
-if(!require("jsonlite")) install.packages("jsonlite") # For parsing JSON
-if(!require("stringr")) install.packages("stringr")   # For text/regex
+
+if(!require("readr")) install.packages("readr")
+if(!require("dplyr")) install.packages("dplyr")
+if(!require("lubridate")) install.packages("lubridate")
+if(!require("jsonlite")) install.packages("jsonlite")
+if(!require("stringr")) install.packages("stringr")
+if(!require("here")) install.packages("here") # NEW: For relative file paths
 
 library(readr)
 library(dplyr)
 library(lubridate)
 library(jsonlite)
 library(stringr)
+library(here) # Initialize here
+
+print(paste("Project root automatically set to:", here()))
+
+# Auto-create necessary folders if they don't exist
+dirs_to_create <- c(
+  here("data"),
+  here("data", "raw"),
+  here("data", "processed"),
+  here("plots")
+)
+
+for (dir in dirs_to_create) {
+  if (!dir.exists(dir)) {
+    dir.create(dir)
+    print(paste("Created missing directory:", dir))
+  }
+}
 
 # -------------------------------------------------------------------
 # STEP 2: IMPORT BFE SOLAR DATA
 # -------------------------------------------------------------------
-bfe_file_path <- "Import BFE  Elektrizitätsproduktionsanlagen 31.10.25/ElectricityProductionPlant.csv"
+bfe_file_path <- here("data", "raw", "ElectricityProductionPlant.csv")
 
 print(paste("Reading BFE file from:", bfe_file_path))
 all_plants_raw <- read_csv(bfe_file_path, locale = locale(encoding = "UTF-8"))
@@ -44,7 +63,7 @@ print(paste("Solar data loaded. Installations in period:", nrow(solar_growth_cle
 # -------------------------------------------------------------------
 # STEP 3: IMPORT SWISSTOPO (FIXED: PRIORITIZE OFFICIAL INDEX)
 # -------------------------------------------------------------------
-swisstopo_file_path <- "Import Swisstopo/AMTOVZ_CSV_LV95.csv"
+swisstopo_file_path <- here("data", "raw", "AMTOVZ_CSV_LV95.csv")
 
 print("Reading Swisstopo lookup file...")
 ortschaften_raw <- read_delim(swisstopo_file_path, delim = ";", locale = locale(encoding = "UTF-8"))
@@ -75,7 +94,7 @@ print("Swisstopo lookup created (Logic: Index > Name Match).")
 # -------------------------------------------------------------------
 # STEP 4: IMPORT POPULATION DATA (JSON)
 # -------------------------------------------------------------------
-json_file_path <- "Import BFS Commune/px-x-0102020000_201.json"
+json_file_path <- here("data", "raw", "px-x-0102020000_201.json")
 
 print("Reading Population JSON...")
 json_data <- fromJSON(json_file_path)
@@ -165,11 +184,11 @@ print(head(top_intensity, 20))
 # -------------------------------------------------------------------
 # STEP 7: SAVE RESULTS
 # -------------------------------------------------------------------
-saveRDS(final_dataset, "solar_growth_2018_2024_final.rds")
-write_csv(top_capacity, "ranking_by_capacity.csv")
-write_csv(top_intensity, "ranking_by_intensity.csv")
+saveRDS(final_dataset, here("data", "processed", "solar_growth_2018_2024_final.rds"))
+write_csv(top_capacity, here("data", "processed", "ranking_by_capacity.csv"))
+write_csv(top_intensity, here("data", "processed", "ranking_by_intensity.csv"))
 
-print("Analysis complete. Both rankings saved.")
+print("Analysis complete. Both rankings saved to data/processed/.")
 
 
 # -------------------------------------------------------------------
@@ -216,7 +235,7 @@ plot_capacity <- ggplot(head(top_capacity, 20), aes(x = reorder(Gemeindename, Ne
   theme_minimal()
 
 # Save Plot 1
-ggsave("plot_top20_capacity.png", plot = plot_capacity, width = 10, height = 8)
+ggsave(here("plots", "plot_top20_capacity.png"), plot = plot_capacity, width = 10, height = 8)
 print(plot_capacity)
 
 
@@ -240,7 +259,7 @@ plot_intensity <- ggplot(head(top_intensity, 20), aes(x = reorder(Gemeindename, 
   theme_minimal()
 
 # Save Plot 2
-ggsave("plot_top20_intensity.png", plot = plot_intensity, width = 10, height = 8)
+ggsave(here("plots", "plot_top20_intensity.png"), plot = plot_intensity, width = 10, height = 8)
 print(plot_intensity)
 
 print("Graphics saved to project folder.")
@@ -265,9 +284,9 @@ if (file.exists(readme_path)) {
     "",
     "## 📊 Preliminary Results (Top 20)",
     "",
-    paste0("![Top 20 Capacity](", plot1_file, ")"),
+    paste0("![Top 20 Capacity](plots/", plot1_file, ")"),
     "",
-    paste0("![Top 20 Intensity](", plot2_file, ")")
+    paste0("![Top 20 Intensity](plots/", plot2_file, ")")
   )
   
   # Check if the images are already in the file to avoid duplicates
