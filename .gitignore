@@ -1,10 +1,10 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+# Ignore all downloaded raw data
+data/raw/*
 
-# Ignore all downloaded raw data (BFE, Swisstopo, BFS)
-data/raw/
+# EXCEPT the lightweight population data (Bundle this with the repo)
+!data/raw/px-x-0102020000_201.json
+
+# Ignore old folders just in case
 Import BFE*/
 Import Swisstopo/
 Import BFS Commune/
