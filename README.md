@@ -4,18 +4,6 @@ This project analyzes the determinants of photovoltaic (PV) adoption across Swis
 
 By merging administrative energy data with socio-economic indicators, we isolate the **growth** of solar capacity between **2018 and 2024**, identifying which communes are successfully driving the energy transition.
 
-## 📊 Preliminary Results (Top 20)
-
-We rank municipalities using two distinct "Success Metrics":
-
-### 1. Capacity Density (The "Power" Leaders)
-
-*Metric: Newly installed Watts per Capita (2018–2024)* ![Top 20 Capacity](plot_top20_capacity.png)
-
-### 2. Adoption Intensity (The "Frequency" Leaders)
-
-*Metric: Number of new installations per 1,000 inhabitants* ![Top 20 Intensity](plot_top20_intensity.png)
-
 ## 🚀 How to Reproduce This Study
 
 To ensure full reproducibility across different operating systems (Windows, Mac, Linux) while respecting GitHub's file size limits, this project uses the `here` package for relative file paths and excludes the massive raw data files from the repository. 
